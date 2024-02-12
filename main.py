@@ -1,49 +1,49 @@
 import random
 
-def choose_word():
-    words = ["apple", "banana", "orange", "grape", "pineapple"]
+def choose_random_word():
+    words = ["apple", "banana", "orange", "strawberry", "pineapple"]
     return random.choice(words)
 
 def display_word(word, guessed_letters):
-    displayed_word = ""
+    display = ""
     for letter in word:
         if letter in guessed_letters:
-            displayed_word += letter
+            display += letter
         else:
-            displayed_word += "*"
-    return displayed_word
+            display += "*"
+    return display
 
-def game():
-    word = choose_word()
-    attempts = int(input("Введіть кількість спроб вгадати: "))
+def main():
+    word_to_guess = choose_random_word()
+    attempts = int(input("Введіть кількість спроб: "))
     guessed_letters = []
 
     while attempts > 0:
-        print(display_word(word, guessed_letters))
+        print(display_word(word_to_guess, guessed_letters))
+        guess = input("Введіть букву або слово: ").lower()
 
-        guess = input("Введіть літеру або слово: ").lower()
-
-        if guess == word:
-            print("Ви вгадали слово!")
-            break
-        elif len(guess) == 1:
-            if guess in guessed_letters:
-                print("Ви уже вводили цю літеру!")
-            elif guess in word:
+        if len(guess) == 1:  # Якщо введено лише одну літеру
+            if guess in word_to_guess:
                 guessed_letters.append(guess)
-                print("Ця літера є в слові!")
+                print("Ви вгадали літеру!")
             else:
-                print("Такої літери немає!")
-            attempts -= 1
-        else:
-            print("Спробуйте ще раз!")
+                print("Такої літери немає.")
+        else:  # Якщо введено слово
+            if guess == word_to_guess:
+                print("Вітаємо, ви вгадали слово!")
+                break
+            else:
+                print("Неправильне слово.")
 
-        if "*" not in display_word(word, guessed_letters):
+        if set(word_to_guess).issubset(guessed_letters):
             print("Ви вгадали слово!")
             break
+
+        attempts -= 1
+        print("Залишилося спроб:", attempts)
 
     if attempts == 0:
-        print("Ви програли! Слово було:", word)
+        print("Ви програли. Спроби закінчилися.")
 
 if __name__ == "__main__":
-    game()
+    main()
